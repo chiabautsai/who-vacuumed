@@ -1,0 +1,168 @@
+/* Enhanced Loading Animations */
+
+@keyframes shimmer {
+  0% { 
+    background-position: -200% 0; 
+  }
+  100% { 
+    background-position: 200% 0; 
+  }
+}
+
+@keyframes wave {
+  0%, 100% { 
+    transform: scaleY(1);
+    opacity: 0.7;
+  }
+  50% { 
+    transform: scaleY(0.8);
+    opacity: 1;
+  }
+}
+
+@keyframes fadeInUp {
+  0% {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes progressPulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.6;
+  }
+}
+
+/* Skeleton Loading States */
+.skeleton-shimmer {
+  background: linear-gradient(
+    90deg,
+    hsl(var(--muted)) 0%,
+    hsl(var(--muted) / 0.5) 50%,
+    hsl(var(--muted)) 100%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 1.5s ease-in-out infinite;
+}
+
+.skeleton-wave {
+  background: hsl(var(--muted));
+  animation: wave 2s ease-in-out infinite;
+}
+
+.skeleton-pulse {
+  background: hsl(var(--muted));
+  animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+/* Progressive Loading */
+.progressive-fade-in {
+  animation: fadeInUp 0.3s ease-out forwards;
+}
+
+.loading-indicator {
+  animation: progressPulse 2s ease-in-out infinite;
+}
+
+/* Interaction States */
+.timeline-loading {
+  pointer-events: none;
+  user-select: none;
+}
+
+.timeline-interactive {
+  pointer-events: auto;
+  user-select: none;
+}
+
+/* Loading State Transitions */
+.loading-transition {
+  transition: all 0.2s ease-in-out;
+}
+
+.loading-overlay {
+  background: linear-gradient(
+    135deg,
+    hsl(var(--background) / 0.8) 0%,
+    hsl(var(--background) / 0.9) 100%
+  );
+  backdrop-filter: blur(1px);
+}
+
+/* Progress Bar Animations */
+.progress-bar {
+  transition: width 0.3s ease-out;
+  background: linear-gradient(
+    90deg,
+    hsl(var(--primary)) 0%,
+    hsl(var(--primary) / 0.8) 100%
+  );
+}
+
+.progress-bar-indeterminate {
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    hsl(var(--primary)) 50%,
+    transparent 100%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 1s ease-in-out infinite;
+}
+
+/* Loading State Colors */
+.loading-state-loading {
+  color: hsl(var(--primary));
+  background-color: hsl(var(--primary) / 0.1);
+}
+
+.loading-state-error {
+  color: hsl(var(--destructive));
+  background-color: hsl(var(--destructive) / 0.1);
+}
+
+.loading-state-partial {
+  color: hsl(var(--warning));
+  background-color: hsl(var(--warning) / 0.1);
+}
+
+.loading-state-success {
+  color: hsl(var(--success));
+  background-color: hsl(var(--success) / 0.1);
+}
+
+/* Responsive Loading States */
+@media (max-width: 768px) {
+  .skeleton-shimmer,
+  .skeleton-wave,
+  .skeleton-pulse {
+    animation-duration: 1s;
+  }
+  
+  .loading-indicator {
+    font-size: 0.75rem;
+  }
+}
+
+/* Reduced Motion Support */
+@media (prefers-reduced-motion: reduce) {
+  .skeleton-shimmer,
+  .skeleton-wave,
+  .skeleton-pulse,
+  .loading-indicator,
+  .progress-bar,
+  .progressive-fade-in {
+    animation: none;
+  }
+  
+  .loading-transition {
+    transition: none;
+  }
+}
