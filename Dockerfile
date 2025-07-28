@@ -47,11 +47,6 @@ COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
 # Create data directory for SQLite database
 RUN mkdir -p /app/data && chown nextjs:nodejs /app/data
 
-# Initialize database on container start
-COPY --from=builder /app/scripts/init-db.ts ./scripts/
-COPY --from=builder /app/drizzle ./drizzle/
-COPY --from=builder /app/node_modules ./node_modules
-
 USER nextjs
 
 EXPOSE 3000
@@ -59,5 +54,5 @@ EXPOSE 3000
 # Coolify expects the app to bind to 0.0.0.0
 ENV HOSTNAME="0.0.0.0"
 
-# Start script that initializes DB if needed
-CMD ["sh", "-c", "if [ ! -f /app/data/chore-system.db ]; then node -r tsx/cjs ./scripts/init-db.ts; fi && node server.js"]
+# Just run the Next.js app
+CMD ["node", "server.js"]
