@@ -9,7 +9,7 @@ const DATABASE_URL = process.env.DATABASE_URL || './data/chore-system.db'
 
 // Lazy database connection
 let _sqlite: Database.Database | null = null
-let _db: ReturnType<typeof drizzle> | null = null
+let _db: ReturnType<typeof drizzle<typeof schema>> | null = null
 
 function initializeConnection() {
   if (!_sqlite) {
@@ -28,18 +28,18 @@ function initializeConnection() {
   return { sqlite: _sqlite, db: _db! }
 }
 
-// Lazy getters
-export const db = new Proxy({} as ReturnType<typeof drizzle>, {
-  get(target, prop) {
+// Lazy getters with proper typing
+export const db = new Proxy({} as ReturnType<typeof drizzle<typeof schema>>, {
+  get(target, prop: string | symbol) {
     const { db } = initializeConnection()
-    return (db as any)[prop]
+    return Reflect.get(db, prop)
   }
 })
 
 export const sqlite = new Proxy({} as Database.Database, {
-  get(target, prop) {
+  get(target, prop: string | symbol) {
     const { sqlite } = initializeConnection()
-    return (sqlite as any)[prop]
+    return Reflect.get(sqlite, prop)
   }
 })
 
