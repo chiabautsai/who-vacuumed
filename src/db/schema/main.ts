@@ -8,6 +8,8 @@ import {
   varchar,
 } from "drizzle-orm/pg-core";
 
+import { user } from "./auth-schema";
+
 const pgTable = pgTableCreator((name) => `who-vacuumed_${name}`);
 
 export const roleEnum = pgEnum("role", ["admin", "member", "pending"]);
@@ -21,7 +23,9 @@ export const tenant = pgTable("tenant", {
 
 export const tenantMember = pgTable("tenant_member", {
   id: uuid().primaryKey().defaultRandom().notNull(),
-  userId: varchar().notNull(),
+  userId: varchar()
+    .notNull()
+    .references(() => user.id, { onDelete: "cascade" }),
   role: roleEnum("role").default("pending").notNull(),
   tenantId: uuid()
     .notNull()
@@ -42,7 +46,9 @@ export const choreType = pgTable("chore_type", {
 
 export const choreEntry = pgTable("chore_entry", {
   id: uuid().primaryKey().defaultRandom().notNull(),
-  userId: varchar().notNull(),
+  userId: varchar()
+    .notNull()
+    .references(() => user.id, { onDelete: "cascade" }),
   choreTypeId: uuid()
     .notNull()
     .references(() => choreType.id, {
