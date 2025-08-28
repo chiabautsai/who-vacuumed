@@ -5,7 +5,7 @@ import {
   real,
   timestamp,
   uuid,
-  varchar,
+  text,
 } from "drizzle-orm/pg-core";
 
 import { user } from "./auth-schema";
@@ -16,14 +16,14 @@ export const roleEnum = pgEnum("role", ["admin", "member", "pending"]);
 
 export const tenant = pgTable("tenant", {
   id: uuid().primaryKey().defaultRandom().notNull(),
-  name: varchar().notNull(),
-  description: varchar(),
+  name: text().notNull(),
+  description: text(),
   createdAt: timestamp().defaultNow().notNull(),
 });
 
 export const tenantMember = pgTable("tenant_member", {
   id: uuid().primaryKey().defaultRandom().notNull(),
-  userId: varchar()
+  userId: text()
     .notNull()
     .references(() => user.id, { onDelete: "cascade" }),
   role: roleEnum("role").default("pending").notNull(),
@@ -35,8 +35,8 @@ export const tenantMember = pgTable("tenant_member", {
 
 export const choreType = pgTable("chore_type", {
   id: uuid().primaryKey().defaultRandom().notNull(),
-  name: varchar().notNull(),
-  description: varchar(),
+  name: text().notNull(),
+  description: text(),
   isActive: boolean().default(true).notNull(),
   tenantId: uuid()
     .notNull()
@@ -46,7 +46,7 @@ export const choreType = pgTable("chore_type", {
 
 export const choreEntry = pgTable("chore_entry", {
   id: uuid().primaryKey().defaultRandom().notNull(),
-  userId: varchar()
+  userId: text()
     .notNull()
     .references(() => user.id, { onDelete: "cascade" }),
   choreTypeId: uuid()
@@ -60,6 +60,6 @@ export const choreEntry = pgTable("chore_entry", {
       onDelete: "cascade",
     }),
   completionPercentage: real().notNull(),
-  comments: varchar(),
+  comments: text(),
   createdAt: timestamp().defaultNow().notNull(),
 });
