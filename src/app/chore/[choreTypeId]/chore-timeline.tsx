@@ -12,7 +12,8 @@ export default async function ChoreTimeline({
       <h1>{chore.name}</h1>
       <p>{chore.description}</p>
       {choreEntries.map((entry) => (
-        <div>
+        <div key={entry.id}>
+          <div>{entry.id}</div>
           <div>{entry.createdAt.toDateString()}</div>
           <div>{entry.completionPercentage}</div>
         </div>
